@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+int wordLadder(string start, string target, set<string> dict)
+{
+    map<string, vector<string>> umap;
+    for(int i = 0; i < start.size(); i++)
+    {
+        string str = start.substr(0,i) + "*" + start.substr(i+1);
+        umap[str].push_back(start);
+    }
+    
+    for(auto it = dict.begin(); it != dict.end(); it++)
+    {
+        for(int i = 0; i < *it.size(); i++)
+        {
+            string str = (*it).substr(0,i) + "*" + (*it).substr(i+1);
+            umap[str].push_back(str);
+        }
+    }
+        
+    queue<pair<string,int>> strQue;
+    strQue.insert();
+    map<string,int> visited;
+    visited[strQue] = 1;
+    
+    while(strQue != empty())
+    {
+        string tStr = strQue.top();
+        strQue.pop();
+        
+        for(int i = 0; i < tStr.size(); i++)
+        {
+            string sStr = tStr.substr(0,i) + "*" + tStr.substr(i+1);
+            vector<string> vectOut = umap[sStr];
+            for(int i = 0; i < vectOut.size(); i++)
+            {
+                if(visited[vectOut[i]] == 0)
+                    strQue.push(make_pair(vectOut[i], ))
+            }
+        }
+    }
+}
+
+int main() {
+    string start = "toon";
+    string target = "plea";
+    set<string> dict = {"poon", "plee", "same", "poie", "plea", "plie", "poin"};
+    
+    cout << "target word transformed : " << wordLadder(start, target, dict);
+
+	return 0;
+}
