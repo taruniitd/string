@@ -33,7 +33,7 @@ int wordLadder(string start, string target, set<string> dict)
         //cout << "poped string = " << tStr.first << endl;
         if(tStr.first == target)
             return 1;
-        cout << "cur string size = " << tStr.first.size() << endl;
+        //cout << "cur string size = " << tStr.first.size() << endl;
         for(int i = 0; i < tStr.first.size(); i++)
         {
             string sStr = tStr.first.substr(0,i) + "*" + tStr.first.substr(i+1);
@@ -53,12 +53,57 @@ int wordLadder(string start, string target, set<string> dict)
     return 0;
 }
 
+int wordLadderBFS(string start, string target, set<string> dict)
+{
+    string tempStr = start;
+    if(start == target)
+        return 1;
+    
+    queue<string> strQueue;
+    strQueue.push(start);
+    
+    while(!strQueue.empty())
+    {
+        tempStr = strQueue.front();
+        strQueue.pop();
+        cout << "poped new string :" << tempStr << endl;
+        for(int pos = 0; pos < tempStr.size(); pos++)
+        {
+            int nextLevel = 0;
+            char origChar = tempStr[pos];
+            //cout << "check next pos :" << pos << "target = " << target << "tempStr = " << tempStr << endl;
+            for(char newChar = 'a'; newChar <= 'z'; newChar++)
+            {
+                if(nextLevel)
+                    break;
+                tempStr[pos] = newChar;
+                if(tempStr == target)
+                    return 1;
+                for(auto it = dict.begin(); it != dict.end(); it++)
+                {
+                    if(tempStr == *it)
+                    {
+                        cout << "pushed new string :" << tempStr << endl;
+                        strQueue.push(tempStr);
+                        dict.erase(tempStr);
+                        nextLevel++;
+                        break;
+                    }                
+                }
+            }
+            tempStr[pos] = origChar;
+        }
+    }   
+    return 0;
+}
+
 int main() {
     string start = "toon";
     string target = "plea";
     set<string> dict = {"poon", "plee", "same", "poie", "plea", "plie", "poin"};
     
-    cout << "target word transformed : " << wordLadder(start, target, dict);
-
-	return 0;
+    cout << "target word transformed : " << wordLadder(start, target, dict) << endl;
+    cout << "Try next method" << endl;
+    cout << "target word found using BFS : " << wordLadderBFS(start, target, dict) << endl;
+    return 0;
 }
