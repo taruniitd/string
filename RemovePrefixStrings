@@ -66,7 +66,7 @@ void display(struct trie_node* root, char str[], int level)
         if(root->children[i])
         {
             str[level] = i + 'a';
-            cout << "cur str formed index: " << i << endl;
+            //cout << "cur str formed index: " << i << endl;
             display(root->children[i], str, level + 1);
         }
     }
@@ -74,7 +74,7 @@ void display(struct trie_node* root, char str[], int level)
 
 int main()
 {
-    string arrStr[] = { "tarun", "tarunMah", "tarunMaheshwari", "Rey", "reyansh", "neetu" };
+    string arrStr[] = { "tarun", "tarunmah", "tarunmaheshwari", "rey", "reyansh", "neetu" };
     int arrLen = sizeof(arrStr) / sizeof(string);
     cout << "arrLen : " << arrLen << endl;
     struct trie_node* root = new trie_node();
