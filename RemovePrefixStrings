@@ -1,1 +1,89 @@
 //https://www.geeksforgeeks.org/strings-from-an-array-which-are-not-prefix-of-any-other-string/
+
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ALPABET_SIZE 26
+struct trie_node
+{
+    struct trie_node* children[ALPABET_SIZE];
+    bool isEnd;    
+    trie_node()
+    {
+        for(int i = 0; i < ALPABET_SIZE; i++)
+        {
+            children[i] = nullptr;
+        }
+        isEnd = false;
+    }
+};
+
+struct trie_node* insert(struct trie_node* cur_node, string curStr)
+{
+    struct trie_node* temp = cur_node;
+    for(int i = 0; i < curStr.length(); i++)
+    {
+        int index = curStr[i] - 'a';
+        if(!temp->children[index] )
+        {
+            cout << "insert new node for char : " << curStr[i] << " " << endl;
+            struct trie_node* new_node = new trie_node;
+            temp->children[index] = new_node;
+        }
+        temp->isEnd = false;
+        temp = temp->children[index];
+        
+    }
+    int i;
+    for(i = 0; i < ALPABET_SIZE; i++)
+    {
+        if(temp->children[i])
+        {
+            cout << "node inserted at index : " << i << "    ";
+            break;
+        }
+    }
+    
+    if(i == ALPABET_SIZE)
+    {
+        cout << " end set for cur string : " <<endl;
+        temp->isEnd = true;
+    }    
+    return cur_node;
+}
+
+struct trie_node* display(struct trie_node* root, char str[], int level)
+{
+    if(root->isEnd)
+    {
+        str[level] = '\0';
+        cout << "string found : " << str << endl;
+    }
+    for(int i = 0; i < ALPABET_SIZE; i++)
+    {
+        if(root->children[i])
+        {
+            str[level] = i + 'a';
+            cout << "cur str formed index: " << i << endl;
+            display(root->children[i], str, level + 1);
+        }
+    }
+}
+
+int main()
+{
+    string arrStr[] = { "tarun", "tarunMah", "tarunMaheshwari", "Rey", "reyansh", "neetu" };
+    int arrLen = sizeof(arrStr) / sizeof(string);
+    cout << "arrLen : " << arrLen << endl;
+    struct trie_node* root = new trie_node();
+    for(int i = 0; i < arrLen; i++)
+    {
+        insert(root, arrStr[i]);
+    }
+    char str[100];
+    cout << "call display : " << endl;
+    display(root, str, 0);
+
+    return 0;
+}
