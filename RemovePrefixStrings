@@ -53,7 +53,7 @@ struct trie_node* insert(struct trie_node* cur_node, string curStr)
     return cur_node;
 }
 
-struct trie_node* display(struct trie_node* root, char str[], int level)
+void display(struct trie_node* root, char str[], int level)
 {
     if(root->isEnd)
     {
