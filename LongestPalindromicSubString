@@ -1,0 +1,43 @@
+//https://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+int longestPalindromicLen(string str, int start, int end, int len, int &lPalinLen, string &outPalinStr)
+{
+    int flag = 1, st = start, en = end;
+    while(start <= end)
+    {
+        if(str[start++] != str[end--])
+            flag = 0;
+    }
+    
+    if(flag)
+    {
+        string res = str.substr(st, en - st + 1);
+        if(lPalinLen < res.size())
+        {
+            lPalinLen = res.size();
+            outPalinStr = res;   
+        }    
+    }
+    return lPalinLen;
+}
+
+int main()
+{
+    string str = "forgeeksskeegfor";
+    int strLen = str.length();
+    unordered_map<char, int> indexMap;
+    int lPalinLen = 0;
+    string outPalinStr = "";
+    for(int i = 0; i < strLen; i++)
+        indexMap[str[i]] = i;
+    
+    for(int start = 0; start < strLen; start++)
+    {
+        int end = indexMap[str[start]];
+        longestPalindromicLen(str, start, end, strLen, lPalinLen, outPalinStr);
+    }
+    cout << "palindromic string len = " << lPalinLen << "final palindromic str = " << outPalinStr;
+    return 0;
+}
