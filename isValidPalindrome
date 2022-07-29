@@ -1,0 +1,74 @@
+//https://www.geeksforgeeks.org/sentence-palindrome-palindrome-removing-spaces-dots-etc/
+#include <iostream>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+bool isValidPalindrome(string str)
+{
+    int l = 0, h = str.length() - 1;
+    
+    for(int i = 0; i <= h; i++)
+        str[i] = tolower(str[i]);
+    
+    while(l <= h)
+    {
+        if(!(str[l] >= 'a' && str[l] <= 'z'))
+            l++;
+        else if(!(str[h] >= 'a' && str[h] <= 'z'))
+            h--;
+        else if(str[l] == str[h])
+            l++, h--;
+        else
+            return false;
+    }   
+    return true;
+}   
+
+bool isValidPalindromeUsingReverse(string str)
+{
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    
+    string temp_str = str;
+    reverse(temp_str.begin(), temp_str.end());
+    
+    return str == temp_str;
+}
+
+bool isValidPalindromeUsingStack(string str)
+{
+    stack<char> temp_stack;
+    
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    
+    for(int i = 0; i < str.length(); i++)
+        temp_stack.push(str[i]);
+    
+    string temp_str = "";
+    while(!temp_stack.empty())
+    {
+        temp_str += temp_stack.top();
+        temp_stack.pop();
+        
+    }
+    //cout << "temp_str = " << temp_str << endl;
+    return str == temp_str;
+}
+
+int main() {
+
+    string str = "Too hot efe to hoot";
+    
+    if(isValidPalindrome(str))
+        cout << "string is palindrome " << endl;    
+    if(isValidPalindromeUsingReverse(str))
+        cout << "string is palindrome " << endl; 
+    
+    if(isValidPalindromeUsingStack(str))
+        cout << "string is palindrome " << endl;
+	return 0;
+}
