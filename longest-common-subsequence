@@ -1,0 +1,62 @@
+//https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/
+#include <iostream>
+#include <cstring>
+#include <vector>
+using namespace std;
+
+int lcs_brute(char X[], char Y[], int str1_len, int str2_len)
+{
+    if(str1_len == 0 || str2_len == 0)
+        return 0;
+    if(X[str1_len - 1] == Y[str2_len - 1])
+        return 1 + lcs_brute(X, Y, str1_len - 1, str2_len - 1);
+    else
+        return max(lcs_brute(X,Y,str1_len - 1, str2_len), lcs_brute(X,Y,str1_len, str2_len - 1));
+}
+
+int lcs_dp_memoization(char X[], char Y[], int str1_len, int str2_len,
+                        vector<vector<int>> &dp)
+{
+    if(str1_len == 0 || str2_len == 0)
+        return 0;
+    if(X[str1_len - 1] == Y[str2_len - 1])
+        return 1 + lcs_dp_memoization(X,Y,str1_len-1,str2_len-1,dp);
+    if(dp[str1_len][str2_len] != -1)
+        return dp[str1_len][str2_len];
+    return max(lcs_dp_memoization(X,Y,str1_len - 1, str2_len,dp), lcs_dp_memoization(X,Y,str1_len, str2_len-1,dp));
+}
+
+int lcs_dp_tabulation(char X[], char Y[], int str1_len, int str2_len)
+{
+    int dp_table[str1_len + 1][str2_len + 1];
+    
+    for(int i = 0; i <= str1_len; i++)
+    {
+        for(int j = 0; j <= str2_len; j++)
+        {
+            if(i == 0 || j == 0)
+                dp_table[i][j] = 0;
+            else if(X[i - 1] == Y[j - 1])
+                dp_table[i][j] = dp_table[i - 1][j - 1] + 1;
+            else
+                dp_table[i][j] = max(dp_table[i - 1][j], dp_table[i][j - 1]);
+        }
+    }
+    return dp_table[str1_len][str2_len];
+}
+
+int main()
+{
+    char X[] = "AGGTAB";
+    char Y[] = "GXTXAYB";
+    
+    int str1_len = strlen(X);
+    int str2_len = strlen(Y);
+    
+    cout << "length of LCS with bruteForce : " << lcs_brute(X,Y,str1_len,str2_len) << endl;
+    vector<vector<int>> dp(str1_len+1, vector<int>(str2_len+1, -1));
+    cout << "length of LCS with DP memo : " << lcs_dp_memoization(X,Y,str1_len,str2_len,dp) << endl;
+    
+    cout << "length of LCS with tabulation : " << lcs_dp_tabulation(X,Y,str1_len,str2_len);
+    return 0;
+}
